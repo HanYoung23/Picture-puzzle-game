@@ -4,16 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Picture-Puzzle</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.0/css/all.css"
+    />
   </head>
   <body>
     <section class="header">
-      <button class="startBtn"></button>
-      <button class="cancelBtn"></button>
-      <div class="timer"></div>
+      <button class="startBtn"><i class="fas fa-play"></i></button>
+      <button class="pauseBtn"><i class="fas fa-pause"></i></button>
+      <button class="shuffleBtn"><i class="fas fa-random"></i></button>
+      <div class="piecesBtns">
+        <button class="threeBythree">3 X 3</button>
+        <button class="fourByfour">4 X 4</button>
+        <button class="fiveByfive">5 X 5</button>
+      </div>
+      <div class="timer">00:00:00</div>
+      <div class="headerPhoto">
+        <img src="imgs/game1.png" alt="headerPhoto" />
+      </div>
     </section>
     <section class="gameField">
       <div class="puzzleBroad"></div>
-      <div class="picturePieces"></div>
     </section>
   </body>
 </html>
