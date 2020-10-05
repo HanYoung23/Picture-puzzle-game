@@ -1,0 +1,111 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Bangers", cursive;
+}
+
+body {
+  text-align: center;
+  background-color: black;
+}
+
+body .gameScreen {
+  background-image: url("imgs/background.png");
+  background-size: cover;
+  width: 600px;
+  margin: 20px auto;
+  border-radius: 20px;
+}
+
+section.gameField {
+  padding: 8px 0;
+}
+
+section.gameField .gameTitle {
+  color: beige;
+  font-size: 40px;
+  background-color: black;
+  width: fit-content;
+  margin: auto;
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+section.gameField .timer {
+  background-color: palegoldenrod;
+  width: fit-content;
+  margin: 8px auto;
+  padding: 8px;
+  border-radius: 12px;
+  border: dashed 4px black;
+  font-size: 20px;
+}
+
+section.gameField .puzzleBoard {
+  background-color: palegoldenrod;
+  width: 360px;
+  height: 360px;
+  padding: 8px;
+  margin: auto;
+  border-radius: 12px;
+  border: dashed 4px black;
+}
+
+section.gameField .puzzleBoard img.piecesPhoto {
+  width: 100%;
+  height: 100%;
+}
+
+section.gamePhotoAndBtns {
+  display: flex;
+  align-items: center;
+  width: 380px;
+  margin: auto;
+}
+
+section.gamePhotoAndBtns img.originalPhoto {
+  width: 160px;
+  height: 160px;
+}
+
+section.gamePhotoAndBtns .gameBtns {
+  margin: auto;
+}
+
+section.gamePhotoAndBtns .gameControlBtns {
+  background-color: red;
+  padding: 8px;
+  margin: 16px 0;
+}
+
+section.gamePhotoAndBtns .gameControlBtns button {
+  background-color: palegoldenrod;
+  font-size: 32px;
+  cursor: pointer;
+  outline: none;
+  border: solid 2px black;
+  border-radius: 50%;
+  padding: 8px;
+  margin: 0 4px;
+}
+
+section.gamePhotoAndBtns .gameSettingBtns {
+  background-color: blue;
+  padding: 12px 8px;
+  margin: 12px 0;
+}
+
+section.gamePhotoAndBtns .gameSettingBtns button {
+  background-color: palegoldenrod;
+  font-size: 20px;
+  cursor: pointer;
+  outline: none;
+  border: solid 2px black;
+  padding: 8px;
+  margin: 0 4px;
+}
+
+.author img.myLogo {
+  width: 14px;
+  margin-left: 8px;
+}
