@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Picture-Puzzle</title>
+    <meta name="author" content="HanYoung" />
+    <link rel="icon" type="image/png" href="imgs/favicon.png" />
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.15.0/css/all.css"
@@ -22,7 +24,25 @@
         <div class="gameTitle">Sliding Puzzle !</div>
         <div class="timer">00:00:00</div>
         <div class="puzzleBoard">
-          <img class="piecesPhoto" src="imgs/game1.png" alt="headerPhoto" />
+          <!--  -->
+          <div id="table">
+            <div id="row1">
+              <div id="cell11" class="tile1"></div>
+              <div id="cell12" class="tile2"></div>
+              <div id="cell13" class="tile3"></div>
+            </div>
+            <div id="row2">
+              <div id="cell21" class="tile4"></div>
+              <div id="cell22" class="tile5"></div>
+              <div id="cell23" class="tile6"></div>
+            </div>
+            <div id="row3">
+              <div id="cell31" class="tile7"></div>
+              <div id="cell32" class="tile8"></div>
+              <div id="cell33" class="tile9"></div>
+            </div>
+          </div>
+          <!-- <img class="piecesPhoto" src="imgs/game1.png" alt="headerPhoto" /> -->
         </div>
       </section>
       <section class="gamePhotoAndBtns">
@@ -52,7 +72,7 @@
         <button class="popUpRefresh">
           <i class="fas fa-redo"></i>
         </button>
-        <span class="popUpMessage">Hello</span>
+        <span class="popUpMessage">Good Job ! 👍</span>
       </section>
     </div>
   </body>
