@@ -42,13 +42,31 @@ section.gameField .gameTitle {
   border-radius: 20px;
 }
 
-section.gameField .timer {
+section.gameField .gameTimerAndMove {
+  display: flex;
+  justify-content: center;
+  width: 400px;
+  margin: auto;
+}
+
+section.gameField .gameTimerAndMove .timer {
   background-color: palegoldenrod;
   width: fit-content;
   margin: 8px auto;
   padding: 8px;
   border-radius: 12px;
-  border: dashed 4px black;
+  border: solid 4px black;
+  font-size: 20px;
+}
+
+section.gameField .gameTimerAndMove .movement {
+  background-color: black;
+  color: palegoldenrod;
+  width: fit-content;
+  margin: 8px auto;
+  padding: 8px;
+  border-radius: 12px;
+  border: solid 4px palegoldenrod;
   font-size: 20px;
 }
 
@@ -56,23 +74,13 @@ section.gameField .puzzleBoard {
   background-color: palegoldenrod;
   width: 360px;
   height: 360px;
-  padding: 8px;
+  padding: 8px 8px 12px 8px;
   margin: auto;
   border-radius: 12px;
   border: dashed 4px black;
 }
 
 /*  */
-
-.puzzleBoard #table {
-  display: table;
-}
-
-#row1,
-#row2,
-#row3 {
-  display: table-row;
-}
 
 .tile1,
 .tile2,
@@ -84,10 +92,11 @@ section.gameField .puzzleBoard {
 .tile8,
 .tile9 {
   display: table-cell;
-  width: 90px;
-  height: 90px;
-  border: 1px solid white;
+  width: 120px;
+  height: 120px;
+  border: 1px solid beige;
   background: url(imgs/game1.png);
+  background-size: 360px;
   cursor: pointer;
 }
 
@@ -119,6 +128,7 @@ section.gameField .puzzleBoard {
   background: white;
   cursor: default;
 }
+
 /*  */
 
 section.gameField .puzzleBoard img.piecesPhoto {
@@ -151,10 +161,15 @@ section.gamePhotoAndBtns .gameControlBtns {
 section.gamePhotoAndBtns .gameControlBtns button {
   background-color: palegoldenrod;
   font-size: 32px;
+  text-align: center;
   border: solid 2px black;
   border-radius: 50%;
   padding: 8px;
   margin: 0 4px;
+}
+
+section.gamePhotoAndBtns .gameControlBtns button.playBtn i {
+  width: 32px;
 }
 
 section.gamePhotoAndBtns .gameSettingBtns {
