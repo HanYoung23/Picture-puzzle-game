@@ -72,26 +72,23 @@ section.gameField .gameTimerAndMove .movement {
 
 section.gameField .puzzleBoard {
   background-color: palegoldenrod;
-  width: 360px;
-  height: 360px;
-  padding: 8px 8px 12px 8px;
+  width: 368px;
+  height: 368px;
+  padding: 8px;
   margin: auto;
   border-radius: 12px;
   border: dashed 4px black;
 }
 
 /*  */
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  justify-content: space-evenly;
+}
 
-.tile1,
-.tile2,
-.tile3,
-.tile4,
-.tile5,
-.tile6,
-.tile7,
-.tile8,
-.tile9 {
-  display: table-cell;
+ul li {
   width: 120px;
   height: 120px;
   border: 1px solid beige;
@@ -128,7 +125,6 @@ section.gameField .puzzleBoard {
   background: white;
   cursor: default;
 }
-
 /*  */
 
 section.gameField .puzzleBoard img.piecesPhoto {
