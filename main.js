@@ -4,6 +4,9 @@ const shuffleBtn = document.querySelector(".shuffleBtn");
 const photoChangeBtn = document.querySelector(".photoChangeBtn");
 const undoBtn = document.querySelector(".undoBtn");
 const replayBtn = document.querySelector(".popUpReplayBtn");
+const threeByThreeBtn = document.querySelector(".threeByThreeBtn");
+const fourByFourBtn = document.querySelector(".fourByFourBtn");
+const fiveByFiveBtn = document.querySelector(".fiveByFiveBtn");
 
 const timer = document.querySelector(".timer");
 const movement = document.querySelector(".movement");
@@ -14,68 +17,95 @@ const popUpMessage = document.querySelector(".popUpMessage");
 let initTime = 0;
 let startGameTimer;
 let movementCount = 0;
-let TILENUMBER = 9;
 let movemoentArray = [];
 let swapCount;
+
+// 타일 생성 변수
+let DIMENSION = 3;
+let TILE_NUMBER = Math.sqrt(DIMENSION);
+let TILE_BACKGROUND_SIZE = 360;
+let TILE_WIDTH = TILE_BACKGROUND_SIZE / DIMENSION;
+let TILE_HEIGHTH = TILE_BACKGROUND_SIZE / DIMENSION;
 
 var addPlayBtnEvent = playBtn.addEventListener("click", startGame);
 var addShuffleBtnEvent = shuffleBtn.addEventListener("click", shuffle);
 var addUndoBtnEvent = undoBtn.addEventListener("click", undoMovement);
 var addReplayBtnEvent = replayBtn.addEventListener("click", replayGame);
+var addThreeByThreeBtnEvent = threeByThreeBtn.addEventListener(
+  "click",
+  changeDimensionToThree
+);
+var addFourByFourBtnEvent = fourByFourBtn.addEventListener(
+  "click",
+  changeDimensionToFour
+);
+var addFiveByFiveBtnEvent = fiveByFiveBtn.addEventListener(
+  "click",
+  changeDimensionToFive
+);
 
-function startGame() {
-  removePlayBtnEvent();
-  setGameTimer();
-  createTileLists();
-  //shuffle();
-}
-
-function removePlayBtnEvent() {
-  playBtn.removeEventListener("click", startGame);
-}
-
-function setGameTimer() {
-  startGameTimer = setInterval(() => {
-    ++initTime;
-    let seconds = initTime % 60;
-    let minutes = Math.floor((initTime / 60) % 60);
-    let hours = Math.floor((initTime / 3600) % 60);
-
-    hour = hours < 10 ? "0" + hours : hours;
-    min = minutes < 10 ? "0" + minutes : minutes;
-    sec = seconds < 10 ? "0" + seconds : seconds;
-
-    timer.innerHTML = `Time - ${hour}:${min}:${sec}`;
-  }, 1000);
-  // clearInterval(setGameTimer);
-}
-
-function createTileLists() {
-  let c = 1;
-  for (let i = 1; i <= TILENUMBER; i++) {
-    if (i <= TILENUMBER / 3) {
-      let r = 1;
-      ul.innerHTML += `<li id="cell${r}${c}" class="tile${i}" onClick="clickTile(${r},${c});"></li>`;
-    } else if (i > 3 && i <= 6) {
-      r = 2;
-      ul.innerHTML += `<li id="cell${r}${
-        c - 3
-      }" class="tile${i}" onClick="clickTile(${r},${c - 3});"></li>`;
-    } else if (i > 6 && i <= 9) {
-      r = 3;
-      ul.innerHTML += `<li id="cell${r}${
-        c - 6
-      }" class="tile${i}" onClick="clickTile(${r},${c - 6});"></li>`;
-    }
-    c++;
+function startGame(fromReplay) {
+  if (fromReplay === "replay") {
+    return;
+  } else {
+    createTileLists();
   }
+  BtnOnAndOff("playBtnOff");
+  setGameTimer();
+  shuffle();
+}
+
+function setGameTimer(resetTime) {
+  if (resetTime === 0) {
+    initTime = resetTime;
+  }
+  startGameTimer = setInterval(setTimerFunc, 1000);
+}
+
+function setTimerFunc() {
+  ++initTime;
+  let seconds = initTime % 60;
+  let minutes = Math.floor((initTime / 60) % 60);
+  let hours = Math.floor((initTime / 3600) % 60);
+
+  hour = hours < 10 ? "0" + hours : hours;
+  min = minutes < 10 ? "0" + minutes : minutes;
+  sec = seconds < 10 ? "0" + seconds : seconds;
+
+  timer.innerHTML = `Time - ${hour}:${min}:${sec}`;
 }
 
 function displayMoveMentNumber(numberChange) {
   numberChange;
-  swapCount = movementCount - TILENUMBER;
+  swapCount = movementCount - TILE_NUMBER;
   movement.innerHTML = `Movement : ${swapCount}`;
 }
+
+// ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
+
+function createTileLists() {
+  let row;
+  let column = 1;
+  for (let i = 1; i <= TILE_NUMBER; i++) {
+    if (i <= DIMENSION) {
+      row = 1;
+      ul.innerHTML += `<li id="cell${row}${column}" class="tile${i}" onClick="clickTile(${row},${column});"></li>`;
+    } else if (i > 3 && i <= 6) {
+      row = 2;
+      ul.innerHTML += `<li id="cell${row}${
+        column - 3
+      }" class="tile${i}" onClick="clickTile(${row},${column - 3});"></li>`;
+    } else if (i > 6 && i <= 9) {
+      row = 3;
+      ul.innerHTML += `<li id="cell${row}${
+        column - 6
+      }" class="tile${i}" onClick="clickTile(${row},${column - 6});"></li>`;
+    }
+    c++;
+  }
+}
+//https://codepen.io/bongam/pen/yrwYWJ
+
 ///////////////////////////////////////////////////////
 // <li id="cell11" class="tile1" onClick="clickTile(1,1);"></li>
 // <li id="cell12" class="tile2" onClick="clickTile(1,2);"></li>
@@ -95,16 +125,6 @@ function shuffle() {
       let column2 = Math.floor(Math.random() * 3 + 1);
       swapTiles("cell" + row + column, "cell" + row2 + column2);
     }
-  }
-}
-
-function undoMovement() {
-  if (swapCount > 0) {
-    let cell2 = movemoentArray.slice(-1);
-    movemoentArray.pop();
-    let cell1 = movemoentArray.slice(-1);
-    movemoentArray.pop();
-    swapTiles(cell2, cell1, "undo");
   }
 }
 
@@ -172,9 +192,21 @@ function clickTile(row, column) {
   }
 }
 
+//ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
+
+function undoMovement() {
+  if (swapCount > 0) {
+    let cell2 = movemoentArray.slice(-1);
+    movemoentArray.pop();
+    let cell1 = movemoentArray.slice(-1);
+    movemoentArray.pop();
+    swapTiles(cell2, cell1, "undo");
+  }
+}
+
 function checkSolution() {
   checkTileNum = 0;
-  for (let i = 1; i <= TILENUMBER; i++) {
+  for (let i = 1; i <= TILE_NUMBER; i++) {
     let tileClassName = document.querySelectorAll("li")[`${i - 1}`].className;
     let tileNumber = `tile${i}`;
     console.log(tileNumber);
@@ -191,8 +223,58 @@ function checkSolution() {
 function displayPopUp(message) {
   popUp.style.visibility = "visible";
   popUpMessage.innerHTML = `${message}`;
+  clearInterval(startGameTimer);
+  BtnOnAndOff("allBtnOff");
 }
 
-function replayGame() {}
+function replayGame() {
+  startGame("replay");
+  setGameTimer(0);
+  popUp.style.visibility = "hidden";
+  BtnOnAndOff("allBtnOn");
+}
 
+function BtnOnAndOff(onAndOff) {
+  switch (onAndOff) {
+    case "playBtnOff":
+      playBtn.removeEventListener("click", startGame);
+      break;
+    case "allBtnOn":
+      shuffleBtn.addEventListener("click", shuffle);
+      undoBtn.addEventListener("click", undoMovement);
+      // 44,55버튼
+      break;
+    case "allBtnOff":
+      shuffleBtn.removeEventListener("click", shuffle);
+      undoBtn.removeEventListener("click", undoMovement);
+      // 44,55버튼
+      break;
+  }
+}
+
+function changeDimensionToThree(dimension) {
+  DIMENSION = dimension;
+  TILE_NUMBER = Math.sqrt(dimension);
+}
+
+function changeDimensionToFour() {
+  DIMENSION = 16;
+}
+
+function changeDimensionToFive() {
+  DIMENSION = 25;
+}
+
+// var addThreeByThreeBtnEvent = threeByThreeBtn.addEventListener(
+//   "click",
+//   changeDimensionToThree
+// );
+// var addFourByFourBtnEvent = fourByFourBtn.addEventListener(
+//   "click",
+//   changeDimensionToFour
+// );
+// var addFiveByFiveBtnEvent = fiveByFiveBtn.addEventListener(
+//   "click",
+//   changeDimensionToFive
+// );
 // 난이도 바꾸기

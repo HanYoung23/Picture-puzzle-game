@@ -82,45 +82,21 @@ section.gameField .puzzleBoard {
 
 /*  */
 ul {
-  display: flex;
-  flex-wrap: wrap;
+  position: relative;
+  margin: 0px auto;
   list-style-type: none;
-  justify-content: space-evenly;
 }
 
 ul li {
-  width: 120px;
-  height: 120px;
+  /* width: 120px;
+  height: 120px; */
+  position: absolute;
   border: 1px solid beige;
   background: url(imgs/game1.png);
   background-size: 360px;
   cursor: pointer;
 }
 
-.tile1 {
-  background-position: left top;
-}
-.tile2 {
-  background-position: center top;
-}
-.tile3 {
-  background-position: right top;
-}
-.tile4 {
-  background-position: left center;
-}
-.tile5 {
-  background-position: center center;
-}
-.tile6 {
-  background-position: right center;
-}
-.tile7 {
-  background-position: left bottom;
-}
-.tile8 {
-  background-position: center bottom;
-}
 .tile9 {
   background: white;
   cursor: default;
