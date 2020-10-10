@@ -19,7 +19,6 @@ let movementCount = 0;
 let movemoentArray = [];
 let swapCount;
 
-// 타일 생성 변수
 let DIMENSION;
 let TILE_NUMBER;
 let TILE_BACKGROUND_SIZE = 360;
@@ -47,22 +46,35 @@ BtnOnAndOff("shuffleBtnOff");
 
 function changeDimensionThree() {
   createTileLists(3);
+  BtnOnAndOff();
+  if (DIMENSION !== undefined) {
+    startGame();
+  }
 }
 function changeDimensionFour() {
   createTileLists(4);
+  if (DIMENSION !== undefined) {
+    startGame();
+  }
 }
 function changeDimensionFive() {
   createTileLists(5);
+  if (DIMENSION !== undefined) {
+    startGame();
+  }
 }
 
 function startGame() {
   if (DIMENSION === undefined) {
     alert("Dimension을 선택하세요");
   } else {
-    BtnOnAndOff("playBtnOff");
     setGameTimer(0);
-    shuffle();
-    BtnOnAndOff("shuffleBtnOn");
+    BtnOnAndOff("playBtnOff");
+    //BtnOnAndOff("shuffleBtnOn");
+    BtnOnAndOff("allBtnOn");
+    if (checkSolution) {
+      shuffle();
+    }
   }
 }
 
@@ -90,7 +102,6 @@ function displayMoveMentNumber(numberChange) {
   movement.innerHTML = `Movement : ${swapCount}`;
 }
 
-// ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
 function createTileLists(dimension) {
   ul.innerHTML = "";
   DIMENSION = dimension;
@@ -107,6 +118,7 @@ function createTileLists(dimension) {
   }
   for (row = 1; row <= DIMENSION; row++) {
     for (col = 1; col <= DIMENSION; col++) {
+      //if(row !== DIMENSION && col !== DIMENSION)
       const tiles = document.querySelector(`.tile${n}`);
       tiles.setAttribute("id", `cell${row}${col}`);
       tiles.setAttribute("onclick", `clickTile(${row},${col})`);
@@ -116,11 +128,11 @@ function createTileLists(dimension) {
       tiles.style.height = `${TILE_HEIGHTH}px`;
       tiles.style.backgroundPosition =
         -`${x}` * (`${col}` - 1) + "px " + -`${y}` * (`${row}` - 1) + "px";
-      // tiles.style.backgroundImage = "url(" + "imgs/game2.png" + ")";
-      n++;
+      tiles.style.backgroundImage = "url(" + "imgs/game2.png" + ")";
       if (n === TILE_NUMBER) {
-        tiles.style.backgroundPosition = "null";
+        tiles.style.backgroundImage = "url(" + "imgs/emptyBackground.png" + ")";
       }
+      n++;
     }
   }
   BtnOnAndOff("playBtnOn");
@@ -128,24 +140,22 @@ function createTileLists(dimension) {
 
 function shuffle() {
   movementCount = 0;
-  for (let row1 = 1; row1 <= 3; row1++) {
-    for (let column = 1; column <= 3; column++) {
-      let row2 = Math.floor(Math.random() * 3 + 1);
-      let column2 = Math.floor(Math.random() * 3 + 1);
+  for (let row1 = 1; row1 <= DIMENSION; row1++) {
+    for (let column = 1; column <= DIMENSION; column++) {
+      let row2 = Math.floor(Math.random() * DIMENSION + 1);
+      let column2 = Math.floor(Math.random() * DIMENSION + 1);
       swapTiles("cell" + row1 + column, "cell" + row2 + column2);
     }
   }
 }
 
 function swapTiles(cell1, cell2, doOrUndo) {
-  document.getElementById(cell1);
   let temp = document.getElementById(cell1).className;
   document.getElementById(cell1).className = document.getElementById(
     cell2
   ).className;
   document.getElementById(cell2).className = temp;
 
-  document.getElementById(cell1);
   let tileBg = document.getElementById(cell1).style.backgroundPosition;
   document.getElementById(
     cell1
@@ -154,8 +164,15 @@ function swapTiles(cell1, cell2, doOrUndo) {
   ).style.backgroundPosition;
   document.getElementById(cell2).style.backgroundPosition = tileBg;
 
-  // document.querySelector(`.tile${TILE_NUMBER}`).style.background = "white";
-  //undo
+  let tileBgImg = document.getElementById(cell1).style.backgroundImage;
+  document.getElementById(
+    cell1
+  ).style.backgroundImage = document.getElementById(
+    cell2
+  ).style.backgroundImage;
+  document.getElementById(cell2).style.backgroundImage = tileBgImg;
+
+  // undo;
   if (!doOrUndo) {
     displayMoveMentNumber(++movementCount);
     movemoentArray.push(cell2);
@@ -167,15 +184,17 @@ function swapTiles(cell1, cell2, doOrUndo) {
 }
 
 function clickTile(row, column) {
+  let lastTile = document.querySelector(`.tile${TILE_NUMBER}`).className;
+  console.log(lastTile);
   if (initTime > 0) {
     var cell = document.getElementById("cell" + row + column);
     var tile = cell.className;
-    if (tile != "tile9") {
+    if (tile != lastTile) {
       //Checking if white tile on the right
-      if (column < 3) {
+      if (column < DIMENSION) {
         if (
           document.getElementById("cell" + row + (column + 1)).className ==
-          "tile9"
+          lastTile
         ) {
           swapTiles("cell" + row + column, "cell" + row + (column + 1));
           return;
@@ -185,7 +204,7 @@ function clickTile(row, column) {
       if (column > 1) {
         if (
           document.getElementById("cell" + row + (column - 1)).className ==
-          "tile9"
+          lastTile
         ) {
           swapTiles("cell" + row + column, "cell" + row + (column - 1));
           return;
@@ -195,17 +214,17 @@ function clickTile(row, column) {
       if (row > 1) {
         if (
           document.getElementById("cell" + (row - 1) + column).className ==
-          "tile9"
+          lastTile
         ) {
           swapTiles("cell" + row + column, "cell" + (row - 1) + column);
           return;
         }
       }
       //Checking if white tile is below
-      if (row < 3) {
+      if (row < DIMENSION) {
         if (
           document.getElementById("cell" + (row + 1) + column).className ==
-          "tile9"
+          lastTile
         ) {
           swapTiles("cell" + row + column, "cell" + (row + 1) + column);
           return;
@@ -254,6 +273,14 @@ function replayGame() {
   startGame();
   popUp.style.visibility = "hidden";
   BtnOnAndOff("allBtnOn");
+}
+
+function controlBtns(btnName, removeOrAdd, funtionName) {
+  if (removeOrAdd === "remove") {
+    btnName.removeEventListener("click", functionName);
+  } else if (removeOrAdd === "add") {
+    btnName.addEventListener("click", functionName);
+  }
 }
 
 function BtnOnAndOff(onAndOff) {

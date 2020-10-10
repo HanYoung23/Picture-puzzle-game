@@ -91,11 +91,11 @@ ul li {
   position: absolute;
   border: 1px solid beige;
   cursor: pointer;
-  background-image: url(imgs/game2.png);
+  /* background-image: url(imgs/game2.png); */
   background-size: 360px;
 }
-
-/* .tile9 {
+/* 
+.tile9 {
   cursor: default;
   background: beige;
 } */
