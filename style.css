@@ -72,8 +72,8 @@ section.gameField .gameTimerAndMove .movement {
 
 section.gameField .puzzleBoard {
   background-color: palegoldenrod;
-  width: 368px;
-  height: 368px;
+  width: 362px;
+  height: 362px;
   padding: 8px;
   margin: auto;
   border-radius: 12px;
@@ -88,19 +88,17 @@ ul {
 }
 
 ul li {
-  /* width: 120px;
-  height: 120px; */
   position: absolute;
   border: 1px solid beige;
-  background: url(imgs/game1.png);
-  background-size: 360px;
   cursor: pointer;
+  background-image: url(imgs/game2.png);
+  background-size: 360px;
 }
 
-.tile9 {
-  background: white;
+/* .tile9 {
   cursor: default;
-}
+  background: beige;
+} */
 /*  */
 
 section.gameField .puzzleBoard img.piecesPhoto {
