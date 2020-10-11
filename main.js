@@ -18,9 +18,9 @@ let movementCount = 0;
 let movemoentArray = [];
 let swapCount;
 let dimensionOnOff;
-let clickTileOnOff;
+let clickTileOnOff = "on";
 
-let DIMENSION;
+let DIMENSION = 0;
 let TILE_NUMBER;
 let TILE_BACKGROUND_SIZE = 360;
 let TILE_WIDTH = TILE_BACKGROUND_SIZE / DIMENSION;
@@ -43,11 +43,6 @@ var addFiveDimensionEvent = fiveDimensionBtn.addEventListener("click", () => {
   changeDimension(5);
 });
 
-// dimension change on/off
-// 기능 개선 / 코드 개선
-
-controlFunctionBtns("shuffleBtn", "remove", shuffle);
-
 function changeDimension(dimensionOrSwitch) {
   if (dimensionOrSwitch === "on") {
     dimensionOnOff = "on";
@@ -61,25 +56,27 @@ function changeDimension(dimensionOrSwitch) {
 }
 
 function replayGame() {
-  // 시간 초기화
-  // movement 초기화
+  timer.innerHTML = `Time - 00:00:00`;
+  movement.innerHTML = `Movement : 0`;
   ul.innerHTML = "";
   popUp.style.visibility = "hidden";
   changeDimension("on");
+  DIMENSION = 0;
+  controlFunctionBtns("playBtn", "add", startGame);
 }
 
 function startGame() {
-  if (DIMENSION === undefined) {
+  if (DIMENSION === 0) {
     alert("Dimension을 선택하세요");
   } else {
-    clickTileOnOff = "on";
     setGameTimer(0);
     controlFunctionBtns("playBtn", "remove", startGame);
     controlFunctionBtns("shuffleBtn", "add", shuffle);
     controlFunctionBtns("undoBtn", "add", undoMovement);
+    controlClickTile("on");
     changeDimension("off");
     if (checkSolution) {
-      //shuffle();
+      shuffle();
     }
   }
 }
@@ -142,6 +139,12 @@ function createTileLists(dimension) {
     }
   }
   controlFunctionBtns("playBtn", "add", startGame);
+  controlFunctionBtns("shuffleBtn", "remove", shuffle);
+  controlClickTile("off");
+}
+
+function controlClickTile(onOff) {
+  clickTileOnOff = onOff;
 }
 
 function shuffle() {
@@ -156,6 +159,7 @@ function shuffle() {
 }
 
 function swapTiles(cell1, cell2, doOrUndo) {
+  // 코드 단순히 만들어보기
   let temp = document.getElementById(cell1).className;
   document.getElementById(cell1).className = document.getElementById(
     cell2
@@ -177,7 +181,6 @@ function swapTiles(cell1, cell2, doOrUndo) {
     cell2
   ).style.backgroundImage;
   document.getElementById(cell2).style.backgroundImage = tileBgImg;
-
   // undo;
   if (!doOrUndo) {
     displayMoveMentNumber(++movementCount);
@@ -274,7 +277,7 @@ function displayPopUp(message) {
   controlFunctionBtns("shuffleBtn", "remove", shuffle);
   controlFunctionBtns("undoBtn", "remove", undoMovement);
   changeDimension("off");
-  clickTileOnOff = "off";
+  controlClickTile("off");
 }
 
 // function replayGame() {
