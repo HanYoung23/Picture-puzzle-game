@@ -1,6 +1,5 @@
 const playBtn = document.querySelector(".playBtn");
 const shuffleBtn = document.querySelector(".shuffleBtn");
-const photoChangeBtn = document.querySelector(".photoChangeBtn");
 const undoBtn = document.querySelector(".undoBtn");
 const replayBtn = document.querySelector(".popUpReplayBtn");
 const threeDimensionBtn = document.querySelector(".threeByThree");
@@ -18,6 +17,8 @@ let startGameTimer;
 let movementCount = 0;
 let movemoentArray = [];
 let swapCount;
+let dimensionOnOff;
+let clickTileOnOff;
 
 let DIMENSION;
 let TILE_NUMBER;
@@ -29,51 +30,56 @@ var addPlayBtnEvent = playBtn.addEventListener("click", startGame);
 var addShuffleBtnEvent = shuffleBtn.addEventListener("click", shuffle);
 var addUndoBtnEvent = undoBtn.addEventListener("click", undoMovement);
 var addReplayBtnEvent = replayBtn.addEventListener("click", replayGame);
-var addThreeByThreeBtnEvent = threeDimensionBtn.addEventListener(
+var addThreeDimensionBtnEvent = threeDimensionBtn.addEventListener(
   "click",
-  changeDimensionThree
+  () => {
+    changeDimension(3);
+  }
 );
-var addFourByFourBtnEvent = fourDimensionBtn.addEventListener(
-  "click",
-  changeDimensionFour
-);
-var addFiveByFiveBtnEvent = fiveDimensionBtn.addEventListener(
-  "click",
-  changeDimensionFive
-);
+var addFourDimensionEvent = fourDimensionBtn.addEventListener("click", () => {
+  changeDimension(4);
+});
+var addFiveDimensionEvent = fiveDimensionBtn.addEventListener("click", () => {
+  changeDimension(5);
+});
 
-BtnOnAndOff("shuffleBtnOff");
+// dimension change on/off
+// 기능 개선 / 코드 개선
 
-function changeDimensionThree() {
-  createTileLists(3);
-  BtnOnAndOff();
-  if (DIMENSION !== undefined) {
-    startGame();
+controlFunctionBtns("shuffleBtn", "remove", shuffle);
+
+function changeDimension(dimensionOrSwitch) {
+  if (dimensionOrSwitch === "on") {
+    dimensionOnOff = "on";
+    return;
+  } else if (dimensionOrSwitch === "off") {
+    dimensionOnOff = "off";
+    return;
+  } else if (dimensionOnOff !== "off" && Number.isInteger(dimensionOrSwitch)) {
+    createTileLists(dimensionOrSwitch);
   }
 }
-function changeDimensionFour() {
-  createTileLists(4);
-  if (DIMENSION !== undefined) {
-    startGame();
-  }
-}
-function changeDimensionFive() {
-  createTileLists(5);
-  if (DIMENSION !== undefined) {
-    startGame();
-  }
+
+function replayGame() {
+  // 시간 초기화
+  // movement 초기화
+  ul.innerHTML = "";
+  popUp.style.visibility = "hidden";
+  changeDimension("on");
 }
 
 function startGame() {
   if (DIMENSION === undefined) {
     alert("Dimension을 선택하세요");
   } else {
+    clickTileOnOff = "on";
     setGameTimer(0);
-    BtnOnAndOff("playBtnOff");
-    //BtnOnAndOff("shuffleBtnOn");
-    BtnOnAndOff("allBtnOn");
+    controlFunctionBtns("playBtn", "remove", startGame);
+    controlFunctionBtns("shuffleBtn", "add", shuffle);
+    controlFunctionBtns("undoBtn", "add", undoMovement);
+    changeDimension("off");
     if (checkSolution) {
-      shuffle();
+      //shuffle();
     }
   }
 }
@@ -135,7 +141,7 @@ function createTileLists(dimension) {
       n++;
     }
   }
-  BtnOnAndOff("playBtnOn");
+  controlFunctionBtns("playBtn", "add", startGame);
 }
 
 function shuffle() {
@@ -184,9 +190,8 @@ function swapTiles(cell1, cell2, doOrUndo) {
 }
 
 function clickTile(row, column) {
-  let lastTile = document.querySelector(`.tile${TILE_NUMBER}`).className;
-  console.log(lastTile);
-  if (initTime > 0) {
+  const lastTile = document.querySelector(`.tile${TILE_NUMBER}`).className;
+  if (clickTileOnOff === "on") {
     var cell = document.getElementById("cell" + row + column);
     var tile = cell.className;
     if (tile != lastTile) {
@@ -266,46 +271,24 @@ function displayPopUp(message) {
   popUp.style.visibility = "visible";
   popUpMessage.innerHTML = `${message}`;
   clearInterval(startGameTimer);
-  BtnOnAndOff("allBtnOff");
+  controlFunctionBtns("shuffleBtn", "remove", shuffle);
+  controlFunctionBtns("undoBtn", "remove", undoMovement);
+  changeDimension("off");
+  clickTileOnOff = "off";
 }
 
-function replayGame() {
-  startGame();
-  popUp.style.visibility = "hidden";
-  BtnOnAndOff("allBtnOn");
-}
+// function replayGame() {
+//   changeDimension(0);
+//   popUp.style.visibility = "hidden";
+//   changeDimension("on");
+// }
 
-function controlBtns(btnName, removeOrAdd, funtionName) {
+function controlFunctionBtns(btnName, removeOrAdd, functionName) {
+  const btnSelector = document.querySelector(`.${btnName}`);
+  const btnFunction = functionName;
   if (removeOrAdd === "remove") {
-    btnName.removeEventListener("click", functionName);
+    btnSelector.removeEventListener("click", btnFunction);
   } else if (removeOrAdd === "add") {
-    btnName.addEventListener("click", functionName);
+    btnSelector.addEventListener("click", btnFunction);
   }
 }
-
-function BtnOnAndOff(onAndOff) {
-  switch (onAndOff) {
-    case "playBtnOff":
-      playBtn.removeEventListener("click", startGame);
-      break;
-    case "shuffleBtnOn":
-      shuffleBtn.addEventListener("click", shuffle);
-      break;
-    case "shuffleBtnOff":
-      shuffleBtn.removeEventListener("click", shuffle);
-      break;
-    case "allBtnOn":
-      shuffleBtn.addEventListener("click", shuffle);
-      undoBtn.addEventListener("click", undoMovement);
-      // 44,55버튼
-      break;
-    case "allBtnOff":
-      shuffleBtn.removeEventListener("click", shuffle);
-      undoBtn.removeEventListener("click", undoMovement);
-      // 44,55버튼
-      break;
-  }
-}
-
-// 난이도 바꾸기
-//https://codepen.io/bongam/pen/yrwYWJ
