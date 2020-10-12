@@ -45,6 +45,7 @@ section.gameField .gameTitle {
 section.gameField .gameTimerAndMove {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 400px;
   margin: auto;
 }
@@ -56,6 +57,14 @@ section.gameField .gameTimerAndMove .timer {
   padding: 8px;
   border-radius: 12px;
   border: solid 4px black;
+  font-size: 20px;
+}
+
+section.gameField .gameTimerAndMove .refreshBtn {
+  background-color: beige;
+  padding: 10px;
+  border-radius: 12px;
+  border: solid 2px black;
   font-size: 20px;
 }
 
@@ -80,7 +89,6 @@ section.gameField .puzzleBoard {
   border: dashed 4px black;
 }
 
-/*  */
 ul {
   position: relative;
   margin: 0px auto;
@@ -91,15 +99,8 @@ ul li {
   position: absolute;
   border: 1px solid beige;
   cursor: pointer;
-  /* background-image: url(imgs/game2.png); */
   background-size: 360px;
 }
-/* 
-.tile9 {
-  cursor: default;
-  background: beige;
-} */
-/*  */
 
 section.gameField .puzzleBoard img.piecesPhoto {
   width: 100%;
@@ -116,6 +117,7 @@ section.gamePhotoAndBtns {
 section.gamePhotoAndBtns img.originalPhoto {
   width: 160px;
   height: 160px;
+  border-radius: 12px;
 }
 
 section.gamePhotoAndBtns .gameBtns {
@@ -126,6 +128,7 @@ section.gamePhotoAndBtns .gameControlBtns {
   background-color: red;
   padding: 8px;
   margin: 16px 0;
+  border-radius: 12px;
 }
 
 section.gamePhotoAndBtns .gameControlBtns button {
@@ -146,6 +149,7 @@ section.gamePhotoAndBtns .gameSettingBtns {
   background-color: blue;
   padding: 12px 8px;
   margin: 12px 0;
+  border-radius: 12px;
 }
 
 section.gamePhotoAndBtns .gameSettingBtns button {

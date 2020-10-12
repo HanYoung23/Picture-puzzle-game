@@ -1,3 +1,4 @@
+const refreshBtn = document.querySelector(".refreshBtn");
 const playBtn = document.querySelector(".playBtn");
 const shuffleBtn = document.querySelector(".shuffleBtn");
 const undoBtn = document.querySelector(".undoBtn");
@@ -26,6 +27,7 @@ let TILE_BACKGROUND_SIZE = 360;
 let TILE_WIDTH = TILE_BACKGROUND_SIZE / DIMENSION;
 let TILE_HEIGHTH = TILE_BACKGROUND_SIZE / DIMENSION;
 
+var addRefreshBtnEvent = refreshBtn.addEventListener("click", refreshGame);
 var addPlayBtnEvent = playBtn.addEventListener("click", startGame);
 var addShuffleBtnEvent = shuffleBtn.addEventListener("click", shuffle);
 var addUndoBtnEvent = undoBtn.addEventListener("click", undoMovement);
@@ -53,6 +55,11 @@ function changeDimension(dimensionOrSwitch) {
   } else if (dimensionOnOff !== "off" && Number.isInteger(dimensionOrSwitch)) {
     createTileLists(dimensionOrSwitch);
   }
+}
+
+function refreshGame() {
+  clearInterval(startGameTimer);
+  replayGame();
 }
 
 function replayGame() {
