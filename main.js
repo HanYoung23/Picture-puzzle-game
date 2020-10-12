@@ -74,7 +74,7 @@ function replayGame() {
 
 function startGame() {
   if (DIMENSION === 0) {
-    alert("Dimension을 선택하세요");
+    alert("3x3 / 4x4 / 5x5 중 하나를 선택하세요");
   } else {
     setGameTimer(0);
     controlFunctionBtns("playBtn", "remove", startGame);
