@@ -38,8 +38,8 @@ section.gameField .gameTitle {
   background-color: black;
   width: fit-content;
   margin: auto;
-  padding: 8px 12px;
-  border-radius: 20px;
+  padding: 8px 24px;
+  border-radius: 12px;
 }
 
 section.gameField .gameTimerAndMove {
@@ -60,14 +60,6 @@ section.gameField .gameTimerAndMove .timer {
   font-size: 20px;
 }
 
-section.gameField .gameTimerAndMove .refreshBtn {
-  background-color: beige;
-  padding: 10px;
-  border-radius: 12px;
-  border: solid 2px black;
-  font-size: 20px;
-}
-
 section.gameField .gameTimerAndMove .movement {
   background-color: black;
   color: palegoldenrod;
@@ -77,6 +69,16 @@ section.gameField .gameTimerAndMove .movement {
   border-radius: 12px;
   border: solid 4px palegoldenrod;
   font-size: 20px;
+}
+
+section.gameField .gameTimerAndMove .refreshBtn {
+  color: beige;
+  background-color: black;
+  padding: 8px;
+  margin: 8px auto;
+  border-radius: 12px;
+  border: solid 2px beige;
+  font-size: 24px;
 }
 
 section.gameField .puzzleBoard {

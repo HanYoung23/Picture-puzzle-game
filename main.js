@@ -27,10 +27,6 @@ let TILE_BACKGROUND_SIZE = 360;
 let TILE_WIDTH = TILE_BACKGROUND_SIZE / DIMENSION;
 let TILE_HEIGHTH = TILE_BACKGROUND_SIZE / DIMENSION;
 
-var addRefreshBtnEvent = refreshBtn.addEventListener("click", refreshGame);
-var addPlayBtnEvent = playBtn.addEventListener("click", startGame);
-var addShuffleBtnEvent = shuffleBtn.addEventListener("click", shuffle);
-var addUndoBtnEvent = undoBtn.addEventListener("click", undoMovement);
 var addReplayBtnEvent = replayBtn.addEventListener("click", replayGame);
 var addThreeDimensionBtnEvent = threeDimensionBtn.addEventListener(
   "click",
@@ -44,6 +40,10 @@ var addFourDimensionEvent = fourDimensionBtn.addEventListener("click", () => {
 var addFiveDimensionEvent = fiveDimensionBtn.addEventListener("click", () => {
   changeDimension(5);
 });
+
+//controlFunctionBtns("replayBtn", "add", replayGame);
+controlFunctionBtns("refreshBtn", "add", refreshGame);
+controlFunctionBtns("playBtn", "add", startGame);
 
 function changeDimension(dimensionOrSwitch) {
   if (dimensionOrSwitch === "on") {
@@ -65,10 +65,10 @@ function refreshGame() {
 function replayGame() {
   timer.innerHTML = `Time - 00:00:00`;
   movement.innerHTML = `Movement : 0`;
+  DIMENSION = 0;
   ul.innerHTML = "";
   popUp.style.visibility = "hidden";
   changeDimension("on");
-  DIMENSION = 0;
   controlFunctionBtns("playBtn", "add", startGame);
 }
 
@@ -166,28 +166,20 @@ function shuffle() {
 }
 
 function swapTiles(cell1, cell2, doOrUndo) {
-  // 코드 단순히 만들어보기
-  let temp = document.getElementById(cell1).className;
-  document.getElementById(cell1).className = document.getElementById(
-    cell2
-  ).className;
-  document.getElementById(cell2).className = temp;
+  let cellA = document.querySelector(`#${cell1}`);
+  let cellB = document.querySelector(`#${cell2}`);
 
-  let tileBg = document.getElementById(cell1).style.backgroundPosition;
-  document.getElementById(
-    cell1
-  ).style.backgroundPosition = document.getElementById(
-    cell2
-  ).style.backgroundPosition;
-  document.getElementById(cell2).style.backgroundPosition = tileBg;
+  let tileClass = cellA.className;
+  cellA.className = cellB.className;
+  cellB.className = tileClass;
 
-  let tileBgImg = document.getElementById(cell1).style.backgroundImage;
-  document.getElementById(
-    cell1
-  ).style.backgroundImage = document.getElementById(
-    cell2
-  ).style.backgroundImage;
-  document.getElementById(cell2).style.backgroundImage = tileBgImg;
+  let tileBgPosition = cellA.style.backgroundPosition;
+  cellA.style.backgroundPosition = cellB.style.backgroundPosition;
+  cellB.style.backgroundPosition = tileBgPosition;
+
+  let tileBgImg = cellA.style.backgroundImage;
+  cellA.style.backgroundImage = cellB.style.backgroundImage;
+  cellB.style.backgroundImage = tileBgImg;
   // undo;
   if (!doOrUndo) {
     displayMoveMentNumber(++movementCount);
@@ -249,8 +241,6 @@ function clickTile(row, column) {
   }
 }
 
-//ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
-
 function undoMovement() {
   if (swapCount > 0) {
     let cell2 = movemoentArray.slice(-1);
@@ -286,12 +276,6 @@ function displayPopUp(message) {
   changeDimension("off");
   controlClickTile("off");
 }
-
-// function replayGame() {
-//   changeDimension(0);
-//   popUp.style.visibility = "hidden";
-//   changeDimension("on");
-// }
 
 function controlFunctionBtns(btnName, removeOrAdd, functionName) {
   const btnSelector = document.querySelector(`.${btnName}`);
