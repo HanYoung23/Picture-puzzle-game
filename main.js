@@ -1,4 +1,5 @@
 const refreshBtn = document.querySelector(".refreshBtn");
+const photoBtn = document.querySelector(".photoBtn");
 const playBtn = document.querySelector(".playBtn");
 const shuffleBtn = document.querySelector(".shuffleBtn");
 const undoBtn = document.querySelector(".undoBtn");
@@ -12,6 +13,7 @@ const movement = document.querySelector(".movement");
 const ul = document.querySelector("ul");
 const popUp = document.querySelector(".popUp");
 const popUpMessage = document.querySelector(".popUpMessage");
+const originalPhoto = document.querySelector(".originalPhoto");
 
 let initTime = 0;
 let startGameTimer;
@@ -27,6 +29,7 @@ let TILE_BACKGROUND_SIZE = 360;
 let TILE_WIDTH = TILE_BACKGROUND_SIZE / DIMENSION;
 let TILE_HEIGHTH = TILE_BACKGROUND_SIZE / DIMENSION;
 
+//var addPhotoBtnEvent = photoBtn.addEventListener("click", changePhoto);
 var addReplayBtnEvent = replayBtn.addEventListener("click", replayGame);
 var addThreeDimensionBtnEvent = threeDimensionBtn.addEventListener(
   "click",
@@ -43,6 +46,7 @@ var addFiveDimensionEvent = fiveDimensionBtn.addEventListener("click", () => {
 
 //controlFunctionBtns("replayBtn", "add", replayGame);
 controlFunctionBtns("refreshBtn", "add", refreshGame);
+controlFunctionBtns("photoBtn", "add", changePhoto);
 controlFunctionBtns("playBtn", "add", startGame);
 
 function changeDimension(dimensionOrSwitch) {
@@ -112,6 +116,23 @@ function displayMoveMentNumber(numberChange) {
   movement.innerHTML = `Movement : ${swapCount}`;
 }
 
+function changePhoto() {
+  if (originalPhoto.alt === "game1") {
+    originalPhoto.src = "imgs/game2.png";
+    originalPhoto.alt = "game2";
+  } else if (originalPhoto.alt === "game2") {
+    originalPhoto.src = "imgs/game3.png";
+    originalPhoto.alt = "game3";
+  } else if (originalPhoto.alt === "game3") {
+    originalPhoto.src = "imgs/game1.png";
+    originalPhoto.alt = "game1";
+  }
+  for (let i = 1; i < TILE_NUMBER; i++) {
+    const tiles = document.querySelector(`.tile${i}`);
+    tiles.style.backgroundImage = `url(${originalPhoto.src})`;
+  }
+}
+
 function createTileLists(dimension) {
   ul.innerHTML = "";
   DIMENSION = dimension;
@@ -138,7 +159,7 @@ function createTileLists(dimension) {
       tiles.style.height = `${TILE_HEIGHTH}px`;
       tiles.style.backgroundPosition =
         -`${x}` * (`${col}` - 1) + "px " + -`${y}` * (`${row}` - 1) + "px";
-      tiles.style.backgroundImage = "url(" + "imgs/game2.png" + ")";
+      tiles.style.backgroundImage = `url(${originalPhoto.src})`;
       if (n === TILE_NUMBER) {
         tiles.style.backgroundImage = "url(" + "imgs/emptyBackground.png" + ")";
       }

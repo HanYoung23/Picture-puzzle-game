@@ -81,6 +81,16 @@ section.gameField .gameTimerAndMove .refreshBtn {
   font-size: 24px;
 }
 
+section.gameField .gameTimerAndMove .photoBtn {
+  color: beige;
+  background-color: black;
+  padding: 8px;
+  margin: 8px auto;
+  border-radius: 12px;
+  border: solid 2px beige;
+  font-size: 24px;
+}
+
 section.gameField .puzzleBoard {
   background-color: palegoldenrod;
   width: 362px;
