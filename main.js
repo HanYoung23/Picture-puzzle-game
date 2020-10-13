@@ -1,3 +1,5 @@
+"use strict";
+
 const refreshBtn = document.querySelector(".refreshBtn");
 const photoBtn = document.querySelector(".photoBtn");
 const playBtn = document.querySelector(".playBtn");
@@ -29,25 +31,19 @@ let TILE_BACKGROUND_SIZE = 360;
 let TILE_WIDTH = TILE_BACKGROUND_SIZE / DIMENSION;
 let TILE_HEIGHTH = TILE_BACKGROUND_SIZE / DIMENSION;
 
-//var addPhotoBtnEvent = photoBtn.addEventListener("click", changePhoto);
-var addReplayBtnEvent = replayBtn.addEventListener("click", replayGame);
-var addThreeDimensionBtnEvent = threeDimensionBtn.addEventListener(
-  "click",
-  () => {
-    changeDimension(3);
-  }
-);
-var addFourDimensionEvent = fourDimensionBtn.addEventListener("click", () => {
+replayBtn.addEventListener("click", replayGame);
+refreshBtn.addEventListener("click", refreshGame);
+photoBtn.addEventListener("click", changePhoto);
+playBtn.addEventListener("click", startGame);
+threeDimensionBtn.addEventListener("click", () => {
+  changeDimension(3);
+});
+fourDimensionBtn.addEventListener("click", () => {
   changeDimension(4);
 });
-var addFiveDimensionEvent = fiveDimensionBtn.addEventListener("click", () => {
+fiveDimensionBtn.addEventListener("click", () => {
   changeDimension(5);
 });
-
-//controlFunctionBtns("replayBtn", "add", replayGame);
-controlFunctionBtns("refreshBtn", "add", refreshGame);
-controlFunctionBtns("photoBtn", "add", changePhoto);
-controlFunctionBtns("playBtn", "add", startGame);
 
 function changeDimension(dimensionOrSwitch) {
   if (dimensionOrSwitch === "on") {
@@ -104,9 +100,9 @@ function setTimerFunc() {
   let seconds = initTime % 60;
   let minutes = Math.floor((initTime / 60) % 60);
   let hours = Math.floor((initTime / 3600) % 60);
-  hour = hours < 10 ? "0" + hours : hours;
-  min = minutes < 10 ? "0" + minutes : minutes;
-  sec = seconds < 10 ? "0" + seconds : seconds;
+  let hour = hours < 10 ? "0" + hours : hours;
+  let min = minutes < 10 ? "0" + minutes : minutes;
+  let sec = seconds < 10 ? "0" + seconds : seconds;
   timer.innerHTML = `Time - ${hour}:${min}:${sec}`;
 }
 
@@ -127,9 +123,11 @@ function changePhoto() {
     originalPhoto.src = "imgs/game1.png";
     originalPhoto.alt = "game1";
   }
-  for (let i = 1; i < TILE_NUMBER; i++) {
-    const tiles = document.querySelector(`.tile${i}`);
-    tiles.style.backgroundImage = `url(${originalPhoto.src})`;
+  if (DIMENSION !== 0) {
+    for (let i = 1; i < TILE_NUMBER; i++) {
+      const tiles = document.querySelector(`.tile${i}`);
+      tiles.style.backgroundImage = `url(${originalPhoto.src})`;
+    }
   }
 }
 
@@ -149,7 +147,6 @@ function createTileLists(dimension) {
   }
   for (row = 1; row <= DIMENSION; row++) {
     for (col = 1; col <= DIMENSION; col++) {
-      //if(row !== DIMENSION && col !== DIMENSION)
       const tiles = document.querySelector(`.tile${n}`);
       tiles.setAttribute("id", `cell${row}${col}`);
       tiles.setAttribute("onclick", `clickTile(${row},${col})`);
@@ -201,7 +198,7 @@ function swapTiles(cell1, cell2, doOrUndo) {
   let tileBgImg = cellA.style.backgroundImage;
   cellA.style.backgroundImage = cellB.style.backgroundImage;
   cellB.style.backgroundImage = tileBgImg;
-  // undo;
+
   if (!doOrUndo) {
     displayMoveMentNumber(++movementCount);
     movemoentArray.push(cell2);
@@ -274,7 +271,7 @@ function undoMovement() {
 
 function checkSolution() {
   if (swapCount !== 0) {
-    checkTileNum = 0;
+    let checkTileNum = 0;
     for (let i = 1; i <= TILE_NUMBER; i++) {
       let tileClassName = document.querySelectorAll("li")[`${i - 1}`].className;
       let tileNumber = `tile${i}`;
