@@ -21,41 +21,33 @@ let movementCount = 0;
 let movementArray = [];
 let swapCount;
 
-let DIMENSION = 0;
-let TILE_NUMBER;
-let TILE_BACKGROUND_SIZE = 360;
-
-replayBtn.addEventListener("click", replayGame);
 refreshBtn.addEventListener("click", refreshGame);
 photoBtn.addEventListener("click", changePhoto);
 playBtn.addEventListener("click", startGame);
-//settingBtns.addEventListener("click", setDimension);
 
 var setDimension = (event) => {
   const target = parseInt(event.target.id.charAt(0));
-  if (Number.isInteger(target)) {
-    console.log("asdf");
+  if (target > 0) {
     createTileLists(target);
   }
 };
 settingBtns.addEventListener("click", setDimension);
 
 function createTileLists(dimension) {
-  ul.addEventListener("click", clickTile);
   ul.innerHTML = "";
-  DIMENSION = dimension;
-  TILE_NUMBER = dimension * dimension;
-  let TILE_WIDTH = TILE_BACKGROUND_SIZE / dimension;
-  let TILE_HEIGHTH = TILE_BACKGROUND_SIZE / dimension;
-  let x = TILE_WIDTH;
-  let y = TILE_HEIGHTH;
-  let tileNum = 1;
-  for (let i = 1; i <= TILE_NUMBER; i++) {
+  const TILE_NUM = dimension * dimension;
+  const TILE_BACKGROUND_SIZE = 360;
+  const TILE_WIDTH = TILE_BACKGROUND_SIZE / dimension;
+  const TILE_HEIGHTH = TILE_BACKGROUND_SIZE / dimension;
+  const x = TILE_WIDTH;
+  const y = TILE_HEIGHTH;
+  let num = 1;
+  for (let i = 1; i <= TILE_NUM; i++) {
     ul.innerHTML += `<li class="tile${i}"></li>`;
   }
-  for (let row = 1; row <= DIMENSION; row++) {
-    for (let col = 1; col <= DIMENSION; col++) {
-      let tiles = document.querySelector(`.tile${tileNum}`);
+  for (let row = 1; row <= dimension; row++) {
+    for (let col = 1; col <= dimension; col++) {
+      let tiles = document.querySelector(`.tile${num}`);
       tiles.setAttribute("id", `cell${row}${col}`);
       tiles.style.left = `${x}` * (`${col}` - 1) + "px";
       tiles.style.top = `${y}` * (`${row}` - 1) + "px";
@@ -64,15 +56,12 @@ function createTileLists(dimension) {
       tiles.style.backgroundPosition =
         -`${x}` * (`${col}` - 1) + "px " + -`${y}` * (`${row}` - 1) + "px";
       tiles.style.backgroundImage = `url(${originalPhoto.src})`;
-      if (tileNum === TILE_NUMBER) {
+      if (num === TILE_NUM) {
         tiles.style.backgroundImage = `url(imgs/emptyBackground.png)`;
       }
-      tileNum++;
+      num++;
     }
   }
-  playBtn.addEventListener("click", startGame);
-  shuffleBtn.removeEventListener("click", shuffle);
-  ul.removeEventListener("click", clickTile);
 }
 
 function setGameTimer(resetTime) {
@@ -95,14 +84,13 @@ function setTimerFunc() {
 
 function displayMoveMentNumber(numberChange) {
   numberChange;
-  swapCount = movementCount - TILE_NUMBER;
+  swapCount = movementCount - ul.childElementCount;
   movement.innerHTML = `Movement : ${swapCount}`;
 }
 
 function replayGame() {
   timer.innerHTML = `Time - 00:00:00`;
   movement.innerHTML = `Movement : 0`;
-  DIMENSION = 0;
   ul.innerHTML = "";
   popUp.style.visibility = "hidden";
   settingBtns.addEventListener("click", setDimension);
@@ -113,6 +101,7 @@ function display(message) {
   clearInterval(startGameTimer);
   popUp.style.visibility = "visible";
   popUpMessage.innerHTML = `${message}`;
+  replayBtn.addEventListener("click", replayGame);
   shuffleBtn.removeEventListener("click", shuffle);
   undoBtn.removeEventListener("click", undoMovement);
   settingBtns.removeEventListener("click", setDimension);
@@ -120,7 +109,7 @@ function display(message) {
 }
 
 function startGame() {
-  if (DIMENSION === 0) {
+  if (ul.childElementCount === 0) {
     alert("3x3 / 4x4 / 5x5 중 하나를 선택하세요");
   } else {
     setGameTimer(0);
@@ -129,21 +118,21 @@ function startGame() {
     undoBtn.addEventListener("click", undoMovement);
     ul.addEventListener("click", clickTile);
     settingBtns.removeEventListener("click", setDimension);
-    if (checkSolution) {
-      shuffle();
-    }
+    //shuffle();
   }
 }
 
 function shuffle() {
   movementCount = 0;
-  for (let row1 = 1; row1 <= DIMENSION; row1++) {
-    for (let column = 1; column <= DIMENSION; column++) {
-      let row2 = Math.floor(Math.random() * DIMENSION + 1);
-      let column2 = Math.floor(Math.random() * DIMENSION + 1);
+  const dimension = Math.sqrt(ul.childElementCount);
+  for (let row1 = 1; row1 <= dimension; row1++) {
+    for (let column = 1; column <= dimension; column++) {
+      let row2 = Math.floor(Math.random() * dimension + 1);
+      let column2 = Math.floor(Math.random() * dimension + 1);
       swapTiles("cell" + row1 + column, "cell" + row2 + column2);
     }
   }
+  checkSolution("shuffle");
 }
 
 function undoMovement() {
@@ -172,8 +161,8 @@ function changePhoto() {
     originalPhoto.src = "imgs/game1.png";
     originalPhoto.alt = "game1";
   }
-  if (DIMENSION !== 0) {
-    for (let i = 1; i < TILE_NUMBER; i++) {
+  if (ul.childElementCount !== 0) {
+    for (let i = 1; i < ul.childElementCount; i++) {
       const tiles = document.querySelector(`.tile${i}`);
       tiles.style.backgroundImage = `url(${originalPhoto.src})`;
     }
@@ -207,16 +196,18 @@ function swapTiles(cell1, cell2, doOrUndo) {
 }
 
 var clickTile = (event) => {
+  const tileNum = ul.childElementCount;
+  const dimension = Math.sqrt(tileNum);
   const row = parseInt(event.target.id.charAt(4));
   const column = parseInt(event.target.id.charAt(5));
-  const lastTile = document.querySelector(`.tile${TILE_NUMBER}`);
+  const lastTile = document.querySelector(`.tile${tileNum}`);
   const rightTile = document.querySelector("#cell" + row + (column + 1));
   const leftTile = document.querySelector("#cell" + row + (column - 1));
   const aboveTile = document.querySelector("#cell" + (row - 1) + column);
   const belowTile = document.querySelector("#cell" + (row + 1) + column);
   if (event.target.className != lastTile) {
     //Checking if white tile on the right
-    if (column < DIMENSION) {
+    if (column < dimension) {
       if (rightTile.className === lastTile.className) {
         swapTiles("cell" + row + column, "cell" + row + (column + 1));
         return;
@@ -237,7 +228,7 @@ var clickTile = (event) => {
       }
     }
     //Checking if white tile is below
-    if (row < DIMENSION) {
+    if (row < dimension) {
       if (belowTile.className === lastTile.className) {
         swapTiles("cell" + row + column, "cell" + (row + 1) + column);
         return;
@@ -246,17 +237,19 @@ var clickTile = (event) => {
   }
 };
 
-function checkSolution() {
-  if (swapCount !== 0) {
-    let checkTileNum = 0;
-    for (let i = 1; i <= TILE_NUMBER; i++) {
-      let tileClassName = document.querySelectorAll("li")[`${i - 1}`].className;
-      let tileNumber = `tile${i}`;
-      if (tileClassName === tileNumber) {
-        checkTileNum++;
-        if (checkTileNum === TILE_NUMBER) {
-          display("Good Job ! 👍");
-        }
+function checkSolution(shuffle) {
+  let checkTileNum = 0;
+  for (let i = 1; i <= ul.childElementCount; i++) {
+    let tileClassName = document.querySelectorAll("li")[`${i - 1}`].className;
+    let allTiles = `tile${i}`;
+    if (tileClassName === allTiles) {
+      checkTileNum++;
+    }
+    if (checkTileNum === ul.childElementCount) {
+      if (shuffle === "shuffle") {
+        shuffle();
+      } else {
+        display("Good Job ! 👍");
       }
     }
   }
