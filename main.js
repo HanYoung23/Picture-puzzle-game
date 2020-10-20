@@ -118,7 +118,7 @@ function startGame() {
     undoBtn.addEventListener("click", undoMovement);
     ul.addEventListener("click", clickTile);
     settingBtns.removeEventListener("click", setDimension);
-    //shuffle();
+    shuffle();
   }
 }
 
