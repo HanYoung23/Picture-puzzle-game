@@ -1,6 +1,8 @@
 ## Sliding-Puzzle-Game
 
 ### 모두가 기다리던 사진 퍼즐 게임입니다.
+#HTML #CSS #Javascript
+
 걸어서 게임속으로 -> https://hanyoung23.github.io/Sliding-Puzzle/
 
 #### 기능()
