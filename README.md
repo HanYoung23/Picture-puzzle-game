@@ -1,2 +1,7 @@
-# Sliding-Puzzle
- Sliding-Puzzle
+## Sliding-Puzzle
+
+### 사진을 이용한 퍼즐 게임입니다.
+
+#### 기능 1. 2. 3. 4. 5.
+
+
