@@ -1,6 +1,6 @@
 ## Sliding-Puzzle-Game
 
-### 모두가 좋아하는 사진 퍼즐 게임입니다.
+### 모두가 좋아하는 사진 퍼즐 게임입니다. (프로젝트 기간 - 5일)
 #HTML #CSS #Javascript
 
 게임 플레이 -> https://hanyoung23.github.io/Sliding-Puzzle/
